@@ -1,0 +1,10 @@
+br\com\financas\modelo\entidade\Conta.class
+br\com\financas\dao\MovimentacaoDao.class
+br\com\financas\modelo\vo\EntidadeConverter.class
+br\com\financas\rmi\impl\PersistenciaModeloImpl.class
+br\com\financas\enumeracao\TipoMovimentacao.class
+br\com\financas\dao\ContaDao.class
+br\com\financas\modelo\vo\ContaVO.class
+br\com\financas\modelo\vo\MovimentacaoVO.class
+br\com\financas\rmi\PersistenciaModelo.class
+br\com\financas\modelo\entidade\Movimentacao.class

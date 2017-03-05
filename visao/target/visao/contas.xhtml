@@ -1,0 +1,99 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+	<h:form>
+		<p:fieldset legend="Conta Bancária">
+			<p:outputPanel id="painelContaBancaria">
+				<h:panelGrid columns="2">
+					<h:outputText value="Titular" />
+					<p:inputText value="#{ contaMB.contaVO.titular }" size="45" />
+					<h:outputText value="Banco" />
+					<p:inputText value="#{ contaMB.contaVO.banco }" size="45" />
+					<h:outputText value="Agência" />
+					<p:inputText value="#{ contaMB.contaVO.agencia }" size="10" />
+					<h:outputText value="Número" />
+					<p:inputText value="#{ contaMB.contaVO.numero }" size="10" />
+				</h:panelGrid>
+				
+				<h:panelGrid columns="4">
+				    <p:spacer width="60"/>
+					<p:commandButton action="#{ contaMB.salvar }" value="Salvar" update="listagemContas, painelContaBancaria" />
+					<p:spacer width="20"/>
+					<p:commandButton action="#{ contaMB.adicionarMovimentacao }" value="Adicionar Movimentação"/>
+				</h:panelGrid>
+			</p:outputPanel>
+		</p:fieldset>
+	
+		<p:spacer height="10"/>
+					
+		<p:fieldset legend="Contas">
+			<p:outputPanel id="listagemContas">
+				<center>
+					<p:dataTable var="conta" value="#{ contaMB.contas }"
+						paginator="true" rows="10"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink}
+                                                     {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						emptyMessage="Não a registros salvos" styleClass="classDataTable"
+						style="width:75%;margin-top:10px;" paginatorPosition="bottom">
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Titular" />
+							</f:facet>
+							<h:outputText value="#{ conta.titular }" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Banco" />
+							</f:facet>
+							<h:outputText value="#{ conta.banco }" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Agência" />
+							</f:facet>
+							<h:outputText value="#{ conta.agencia }" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Número" />
+							</f:facet>
+							<h:outputText value="#{ conta.numero }" />
+						</p:column>
+
+						<p:column>
+							<center>
+								<h:commandButton
+									actionListener="#{ contaMB.alterar(conta) }"
+									value="Alterar"
+									update="painelContaBancaria"/>
+							</center>
+						</p:column>
+						
+						<p:column>
+							<center>
+								<h:commandButton
+									actionListener="#{ contaMB.excluir(conta) }"
+									value="Excluir"
+									update="painelContaBancaria"/>
+							</center>
+						</p:column>
+	
+					</p:dataTable>
+				</center>
+			</p:outputPanel>
+		</p:fieldset>
+
+	</h:form>
+</h:body>
+
+</html>

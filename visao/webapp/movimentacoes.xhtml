@@ -1,0 +1,130 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+	
+<h:body>
+	<h:form>
+		<p:fieldset legend="Movimentação">
+			<p:outputPanel id="painelMovimentacao">
+				<h:panelGrid columns="2">
+				    <h:outputText value="Descrição" />
+					<p:inputText value="#{ movimentacaoMB.movimentacaoVO.descricao }" size="60" />
+				    <h:outputText value="Valor" />
+					<p:inputText  value="#{ movimentacaoMB.movimentacaoVO.valor }" size="30">
+                         <f:convertNumber pattern="#,###,##0.00" currencySymbol="R$" currencyCode="BRL" type="currency"/>
+                         <f:ajax event="blur" render="@this"/>
+                    </p:inputText>
+                    <h:outputText  value="Conta" />
+                    <h:selectOneRadio value="#{ movimentacaoMB.movimentacaoVO.tipoMovimentacao }">
+                        <f:selectItem itemLabel="Entrada" itemValue="ENTRADA"/>
+                        <f:selectItem itemLabel="Saida" itemValue="SAIDA" />
+                    </h:selectOneRadio>
+                    <h:outputText value="Data" />
+                    <p:calendar value="#{ movimentacaoMB.movimentacaoVO.data }" showOn="button" size="10"
+                                          pattern="dd/MM/yyyy" locale="pt"/>
+                    <h:outputLabel value="Conta" />
+                    <p:selectOneMenu value="#{ movimentacaoMB.contaVO }">
+                        <f:selectItems value="#{ movimentacaoMB.contas }"
+                                       var="conta" itemLabel="#{ conta.banco }"
+                                       itemValue="#{conta}" />
+                        <f:converter converterId="converterConta"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+
+				<h:panelGrid columns="4">
+			    	<p:spacer width="60"/>
+			    	<p:commandButton action="#{ movimentacaoMB.salvar }" value="Salvar" update="listagemMovimentacoes, painelMovimentacao"/>
+			    	<p:spacer width="20"/>
+			    	<p:commandButton action="#{ movimentacaoMB.adicionarConta }" value="Adicionar Conta"/>
+			    </h:panelGrid>
+			</p:outputPanel>
+		</p:fieldset>
+		
+		<p:spacer height="10"/>
+		
+		<p:fieldset legend="Movimentacões">
+			<p:outputPanel id="listagemMovimentacoes">
+				<center>
+					<p:dataTable var="movimentacao" value="#{ movimentacaoMB.movimentacoes }"
+						paginator="true" rows="10"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink}
+                                                     {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						emptyMessage="Não a registros salvos" styleClass="classDataTable"
+						style="width:75%;margin-top:10px;" paginatorPosition="bottom">
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Valor" />
+							</f:facet>
+							<h:outputText value="#{ movimentacao.valor }">
+                                <f:convertNumber type="currency" currencyCode="BRL"/>
+                            </h:outputText>
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Descricao" />
+							</f:facet>
+							<h:outputText value="#{ movimentacao.descricao }" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Data" />
+							</f:facet>
+							<h:outputText value="#{ movimentacao.data }">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Tipo" />
+							</f:facet>
+							<h:outputText value="#{ movimentacao.tipoMovimentacao }"/>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Banco" />
+							</f:facet>
+							<h:outputText value="#{ movimentacao.conta.banco }"/>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Agência" />
+							</f:facet>
+							<h:outputText value="#{ movimentacao.conta.agencia }"/>
+						</p:column>
+
+						<p:column>
+							<center>
+								<h:commandButton
+									actionListener="#{ movimentacaoMB.alterar(movimentacao) }"
+									value="Alterar"
+									update="painelMovimentacao"/>
+							</center>
+						</p:column>
+						
+						<p:column>
+							<center>
+								<h:commandButton
+									actionListener="#{ movimentacaoMB.excluir(movimentacao) }"
+									value="Excluir"
+									update="painelMovimentacao"/>
+							</center>
+						</p:column>
+					</p:dataTable>
+				</center>
+			</p:outputPanel>
+		</p:fieldset>
+
+	</h:form>
+</h:body>
+
+</html>
